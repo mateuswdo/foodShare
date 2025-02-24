@@ -1,16 +1,46 @@
-import { Text, View } from "react-native";
+import { useRef, useState } from "react";
+import { Alert, Text, TextInput, View } from "react-native";
+
 import { styles } from "./style";
 
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
+
 import { AuthNavigatorRoutesProps } from "@/routes/public.routes";
+
 import { useNavigation } from "@react-navigation/native";
 
+import { useFormContext } from "react-hook-form";
+
 export function Login() {
+  const [loading, setLoading] = useState(false);
+
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
   function handleCreateAccount() {
     navigation.navigate("register");
+  }
+
+  const {
+    control,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useFormContext<RegisterDataProps>();
+
+  const passwordRef = useRef<TextInput>(null);
+
+  async function onSubmitEditing() {
+    try {
+      const { email, password } = getValues();
+
+      console.log(email, password);
+    } catch (error) {
+      Alert.alert("Erro ao fazer login! Tente novamente mais tarde!");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -23,37 +53,47 @@ export function Login() {
       <View style={styles.inputsContainer}>
         <Input
           icon={"mail"}
+          error={errors.email?.message}
           formProps={{
-            name: "",
-            rules: undefined,
-            shouldUnregister: undefined,
-            defaultValue: undefined,
-            control: undefined,
-            disabled: undefined,
+            name: "email",
+            control,
+            rules: {
+              required: "E-mail é obrigatório",
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                message: "E-mail inválido",
+              },
+            },
           }}
           inputProps={{
             placeholder: "Digite seu email",
+            onSubmitEditing: () => passwordRef.current?.focus(),
           }}
         />
 
         <Input
+          ref={passwordRef}
           icon={"lock"}
+          error={errors.password?.message}
           formProps={{
-            name: "",
-            rules: undefined,
-            shouldUnregister: undefined,
-            defaultValue: undefined,
-            control: undefined,
-            disabled: undefined,
+            name: "password",
+            control,
+            rules: {
+              required: "Senha é obrigatório",
+              minLength: {
+                value: 6,
+                message: "A senha deve ter pelo menos 6 dígitos.",
+              },
+            },
           }}
           inputProps={{
             placeholder: "Digite sua senha",
+            secureTextEntry: true,
+            onSubmitEditing: onSubmitEditing,
           }}
         />
 
-        <Text style={styles.forgotPassword}>Esqueci minha senha</Text>
-
-        <Button title="Entrar" />
+        <Button title="Entrar" onPress={handleSubmit(onSubmitEditing)} />
 
         <View>
           <Text style={styles.questionText}>Ainda não tem conta?</Text>

@@ -3,5 +3,5 @@ type RegisterDataProps = {
   email?: string;
   password?: string;
   passwordConfirmation?: string;
-  phone?: string;
+  cpf?: string;
 };
