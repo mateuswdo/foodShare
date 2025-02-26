@@ -10,9 +10,13 @@ import { AuthNavigatorRoutesProps } from "@/routes/public.routes";
 import { useNavigation } from "@react-navigation/native";
 
 import { useFormContext } from "react-hook-form";
+import { api } from "@/services/api";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Register() {
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
+
+  const { login } = useAuth();
 
   const [loading, setLoading] = useState(false);
 
@@ -37,7 +41,16 @@ export function Register() {
       setLoading(true);
       const { nome, email, password, cpf } = getValues();
 
-      console.log(nome, email, password, cpf);
+      await api.post("vulneraveis", {
+        name: nome,
+        email,
+        password,
+        cpf,
+      });
+      Alert.alert("Conta criada com sucesso!");
+      if (email && password) {
+        await login(email, password);
+      }
     } catch (error) {
       Alert.alert(
         "Erro ao fazer login! Tente novamente mais tarde",
