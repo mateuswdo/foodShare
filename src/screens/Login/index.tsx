@@ -11,8 +11,11 @@ import { AuthNavigatorRoutesProps } from "@/routes/public.routes";
 import { useNavigation } from "@react-navigation/native";
 
 import { useFormContext } from "react-hook-form";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Login() {
+  const { login } = useAuth();
+
   const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
@@ -32,9 +35,12 @@ export function Login() {
 
   async function onSubmitEditing() {
     try {
+      setLoading(true);
       const { email, password } = getValues();
 
-      console.log(email, password);
+      if (email && password) {
+        await login(email, password);
+      }
     } catch (error) {
       Alert.alert("Erro ao fazer login! Tente novamente mais tarde!");
       console.log(error);
