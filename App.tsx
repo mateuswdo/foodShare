@@ -13,6 +13,7 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from "@expo-google-fonts/inter";
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -29,13 +30,9 @@ export default function App() {
 
   const methods = useForm();
 
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
-
   return (
-    <FormProvider {...methods}>
+    <AuthProvider>
       <Routes />
-    </FormProvider>
+    </AuthProvider>
   );
 }
