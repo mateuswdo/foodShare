@@ -39,7 +39,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   async function storageUserAndTokenSave(userData: UserDTO, token: string) {
     try {
       setLoadingUserStorageData(true);
-
       await storageUserSave(userData);
       await storageAuthTokenSave({ token });
     } catch (error) {
@@ -51,6 +50,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   async function login(email: string, password: string) {
     try {
+      console.log("Chegou no login", email, password);
       const { data } = await api.post("sessao", {
         email,
         password,
