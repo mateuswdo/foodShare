@@ -1,16 +1,18 @@
 import { useState, useCallback } from "react";
 import { Text, View, FlatList } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { styles } from "./style";
 import { Input } from "@/components/Input";
 import { CardFood } from "@/components/CardFood";
 import { CardItem } from "@/@types/cardItem";
+import { AppNavigatorRoutesProps } from "@/routes/protected.routes";
 
 export function Dashboard() {
   const [search, setSearch] = useState("");
   const [foodsData, setFoodsData] = useState<CardItem[]>([]);
   const [filteredData, setFilteredData] = useState<CardItem[]>([]);
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
 
   const fetchFoodsData = useCallback(async () => {
     try {
@@ -36,6 +38,10 @@ export function Dashboard() {
       item.name.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredData(filtered);
+  }
+
+  function handleCardPress(item: CardItem) {
+    navigation.navigate("reservaScreen", { selectedFood: item });
   }
 
   return (
@@ -66,7 +72,13 @@ export function Dashboard() {
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
         columnWrapperStyle={styles.row}
-        renderItem={({ item }) => <CardFood item={item} />}
+        renderItem={({ item }) => (
+          <CardFood
+            item={item}
+            onPress={() => handleCardPress(item)}
+            selected={false}
+          />
+        )}
       />
     </View>
   );
