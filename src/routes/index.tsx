@@ -11,8 +11,6 @@ export default function Routes() {
   const { user, isLoadingUserStorageData } = useAuth();
   const methods = useForm();
 
-  console.log({ user });
-
   return (
     <NavigationContainer>
       <FormProvider {...methods}>
