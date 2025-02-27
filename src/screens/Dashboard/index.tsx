@@ -32,25 +32,7 @@ export function Dashboard() {
     <View style={styles.container}>
       <Text style={styles.title}>FOOD SHARE</Text>
 
-      <View style={styles.searchInput}>
-        <Input
-          icon={"search"}
-          formProps={{
-            name: "search",
-            rules: undefined,
-            shouldUnregister: undefined,
-            defaultValue: undefined,
-            control: undefined,
-            disabled: undefined,
-          }}
-          inputProps={{
-            placeholder: "Buscar",
-            onChangeText: handleSearch,
-            value: search,
-          }}
-        />
-      </View>
-
+    
       <FlatList
         data={filteredData}
         keyExtractor={(item) => item.id.toString()}

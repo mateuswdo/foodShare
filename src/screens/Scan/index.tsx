@@ -1,5 +1,6 @@
 import { Modal, Text, View, Alert } from "react-native";
 import { Button } from "@/components/Button";
+//import { Styles } from "./style"
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useState, useRef } from "react";
 import axios from "axios"; // ou outra lib de requisição como fetch
