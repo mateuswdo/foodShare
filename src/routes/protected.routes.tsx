@@ -6,13 +6,14 @@ import { Profile } from "@/screens/Profile";
 import { Donation } from "@/screens/Donation";
 import { Dashboard } from "@/screens/Dashboard";
 import ReservaScreen from "@/screens/Reserve";
+import { CardItem } from "@/@types/cardItem";
 
 type ProtectedRoutes = {
   dashboard: undefined;
   donation: undefined;
   profile: undefined;
   scan: undefined;
-  reservaScreen: undefined;
+  reservaScreen: { selectedFood: CardItem };
 };
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<ProtectedRoutes>;
@@ -49,13 +50,13 @@ export default function ProtectedRoutes() {
           headerTitle: "",
         }}
       />
-        <Tab.Screen
-          name="reservaScreen"
-          component={ReservaScreen}
-          options={{
-            headerTitle: "",
-          }}
-        />
+      <Tab.Screen
+        name="reservaScreen"
+        component={ReservaScreen}
+        options={{
+          headerTitle: "",
+        }}
+      />
       <Tab.Screen
         name="profile"
         component={Profile}
