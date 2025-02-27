@@ -25,8 +25,20 @@ export function Profile() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.profileContainer}>
+        <View style={styles.avatarContainer}>
+          <Text style={styles.avatarText}>
+            {user.name.charAt(0).toUpperCase()}
+          </Text>
+        </View>
+        <View>
+          <Text style={styles.userName}>{user.name}</Text>
+          <Text style={styles.userName}>{user.email}</Text>
+          <Text style={styles.userName}>{user.cpf}</Text>
+        </View>
+      </View>
+
       <Button title="Sair" onPress={handleLogout} />
-      <Text>Profile</Text>
     </View>
   );
 }

@@ -1,13 +1,15 @@
-import { StyleSheet, Modal, Text, View, Alert } from "react-native";
+import { Modal, Text, View, Alert } from "react-native";
 import { Button } from "@/components/Button";
-import { Styles } from "./style";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useState, useRef } from "react";
 import axios from "axios"; // ou outra lib de requisição como fetch
 
+import { styles } from "./style";
+
 export function Scan() {
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
+
   const qrCodeLock = useRef(false);
 
   async function handleOpenCamera() {
@@ -53,9 +55,7 @@ export function Scan() {
         <Text style={styles.title}>Vamos verificar seu código!</Text>
       </View>
 
-      <View style={styles.inputsContainer}>
-        <Button title="Ler QR Code" onPress={handleOpenCamera} />
-      </View>
+      <Button icon="camera" title="Ler QR code" onPress={handleOpenCamera} />
 
       <Modal visible={modalIsVisible} style={{ flex: 1 }}>
         <CameraView
@@ -65,41 +65,17 @@ export function Scan() {
             if (data && !qrCodeLock.current) {
               qrCodeLock.current = true;
               setTimeout(() => {
-                handleQRCodeRead(data); 
+                handleQRCodeRead(data);
                 qrCodeLock.current = false;
               }, 500);
             }
           }}
         />
-        <View style={styles.cancelButtonContainer}>
+
+        <View>
           <Button title="Cancelar" onPress={() => setModalIsVisible(false)} />
         </View>
       </Modal>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    color: "black",
-    fontSize: 20,
-    marginBottom: 20,
-  },
-  inputsContainer: {
-    marginBottom: 20,
-  },
-  cancelButtonContainer: {
-    position: "absolute",
-    bottom: 20,
-    left: 20,
-    right: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
