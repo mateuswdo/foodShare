@@ -11,6 +11,10 @@ export const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginHorizontal: "1%",
   },
+  selectedCard: {
+    borderColor: theme.colors.light.primary,
+    borderWidth: 2,
+  },
   image: {
     width: "100%",
     height: 120,
@@ -21,7 +25,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: theme.fonts.Inter_600SemiBold,
     color: theme.colors.dark.primary,
-    textAlign: "left",
+    textAlign: "justify",
     marginBottom: 5,
   },
   description: {
