@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import { styles } from "./styles";
 
-export function Doar() {
+export function Donation() {
   return (
     <View style={styles.container}>
       <Text>Doar</Text>
