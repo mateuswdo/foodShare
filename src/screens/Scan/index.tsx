@@ -28,12 +28,14 @@ export function Scan() {
 
   async function confirmDelivery(reservationId: string) {
     try {
-      const response = await axios.patch(
-        `https://food-share-api.onrender.com/api/reservas/${reservationId}/confirm`, 
-        { status: "ENTREGUE" }
-      );
+      const response = await axios.patch(`/reservas/${reservationId}/confirm`, {
+        status: "ENTREGUE",
+      });
       if (response.status === 200) {
-        Alert.alert("Entrega Confirmada", "A entrega foi confirmada com sucesso!");
+        Alert.alert(
+          "Entrega Confirmada",
+          "A entrega foi confirmada com sucesso!"
+        );
       } else {
         Alert.alert("Erro", "Falha ao confirmar a entrega");
       }
