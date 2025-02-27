@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 24,
     gap: 20,
+    backgroundColor: theme.colors.light.background,
   },
   header: {
     flexDirection: "row",
@@ -42,7 +43,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     marginBottom: 20,
-    backgroundColor: theme.colors.light.primary,
+    backgroundColor: theme.colors.light.card,
     padding: 20,
     borderRadius: 10,
     width: "100%",
