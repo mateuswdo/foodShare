@@ -5,5 +5,4 @@ export type CardItem = {
   expiration_time: Date;
   quantity: number;
   donor_id: number;
-  image: string;
 };
