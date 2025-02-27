@@ -28,7 +28,7 @@ export function Scan() {
   async function confirmDelivery(reservationId: string) {
     try {
       const response = await axios.patch(
-        `https://food-share-api.onrender.com/apireservations/${reservationId}/confirm`, 
+        `https://food-share-api.onrender.com/api/reservas/${reservationId}/confirm`, 
         { status: "ENTREGUE" }
       );
       if (response.status === 200) {
