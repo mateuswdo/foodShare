@@ -1,13 +1,34 @@
-import { useState } from "react";
-import { Text, View, FlatList, Image, TextInput } from "react-native";
+import { useState, useCallback } from "react";
+import { Text, View, FlatList } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import axios from "axios";
 import { styles } from "./style";
 import { Input } from "@/components/Input";
-import { foodsData } from "@/data/foods";
 import { CardFood } from "@/components/CardFood";
+import { CardItem } from "@/@types/cardItem";
 
 export function Dashboard() {
   const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState(foodsData);
+  const [foodsData, setFoodsData] = useState<CardItem[]>([]);
+  const [filteredData, setFilteredData] = useState<CardItem[]>([]);
+
+  const fetchFoodsData = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        "https://food-share-api.onrender.com/api/alimentos/disponiveis"
+      );
+      setFoodsData(response.data);
+      setFilteredData(response.data);
+    } catch (error) {
+      console.error("Error fetching foods data:", error);
+    }
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchFoodsData();
+    }, [fetchFoodsData])
+  );
 
   function handleSearch(text: string) {
     setSearch(text);
@@ -21,12 +42,29 @@ export function Dashboard() {
     <View style={styles.container}>
       <Text style={styles.title}>FOOD SHARE</Text>
 
-    
+      <View style={styles.searchInput}>
+        <Input
+          icon={"search"}
+          formProps={{
+            name: "search",
+            rules: undefined,
+            shouldUnregister: undefined,
+            defaultValue: undefined,
+            control: undefined,
+            disabled: undefined,
+          }}
+          inputProps={{
+            placeholder: "Buscar",
+            onChangeText: handleSearch,
+            value: search,
+          }}
+        />
+      </View>
+
       <FlatList
         data={filteredData}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
-        showsVerticalScrollIndicator={false}
         columnWrapperStyle={styles.row}
         renderItem={({ item }) => <CardFood item={item} />}
       />
