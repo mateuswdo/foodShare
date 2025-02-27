@@ -1,6 +1,6 @@
 import { StyleSheet, Modal, Text, View, Alert } from "react-native";
 import { Button } from "@/components/Button";
-import { Styles } from "./style"
+//import { Styles } from "./style"
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useState, useRef } from "react";
 
