@@ -6,7 +6,7 @@ import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 
 import { Scan } from "@/screens/Scan";
 import { Profile } from "@/screens/Profile";
-import { Donation } from "@/screens/Donation";
+import { Reservas } from "@/screens/Reservas";
 import { Dashboard } from "@/screens/Dashboard";
 import ReservaScreen from "@/screens/Reserve";
 import { CardItem } from "@/@types/cardItem";
@@ -66,7 +66,7 @@ function BottomTabNavigator() {
 
       <Tab.Screen
         name="reservas"
-        component={Donation}
+        component={Reservas}
         options={{
           title: "",
           tabBarIcon: ({ focused, color }) => (
