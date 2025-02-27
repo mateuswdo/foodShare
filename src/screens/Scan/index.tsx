@@ -23,7 +23,6 @@ export function Scan() {
     }
   }
 
-  
   async function confirmDelivery(reservationId: string) {
     try {
       const response = await axios.patch(
