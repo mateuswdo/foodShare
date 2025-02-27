@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Text, View, FlatList, Image, TextInput } from "react-native";
 import { styles } from "./style";
-
+import { Input } from "@/components/Input";
 
 interface CardItem {
   id: number;
@@ -31,14 +31,26 @@ export function Dashboard() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>FOOD SHARE</Text>
-      
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Buscar Refeição..."
-        value={search}
-        onChangeText={handleSearch}
-      />
-      
+
+      <View style={styles.searchInput}>
+        <Input
+          icon={"search"}
+          formProps={{
+            name: "search",
+            rules: undefined,
+            shouldUnregister: undefined,
+            defaultValue: undefined,
+            control: undefined,
+            disabled: undefined,
+          }}
+          inputProps={{
+            placeholder: "Buscar",
+            onChangeText: handleSearch,
+            value: search,
+          }}
+        />
+      </View>
+
       <FlatList
         data={filteredData}
         keyExtractor={(item) => item.id.toString()}

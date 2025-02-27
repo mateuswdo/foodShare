@@ -17,11 +17,6 @@ export const styles = StyleSheet.create({
     marginTop: 30,
   },
   searchInput: {
-    backgroundColor: theme.colors.light.card,
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    fontFamily: theme.fonts.Inter_400Regular,
     marginBottom: 20,
   },
   row: {
