@@ -2,6 +2,7 @@ import { Modal, Text, View, Alert } from "react-native";
 import { Button } from "@/components/Button";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useState, useRef } from "react";
+import axios from "axios"; // ou outra lib de requisição como fetch
 
 import { styles } from "./style";
 
@@ -15,7 +16,7 @@ export function Scan() {
     try {
       const { granted } = await requestPermission();
       if (!granted) {
-        return Alert.alert("Camera", "Você precisa habilitar o uso da camera");
+        return Alert.alert("Camera", "Você precisa habilitar o uso da câmera");
       }
       setModalIsVisible(true);
       qrCodeLock.current = false;
@@ -24,10 +25,30 @@ export function Scan() {
     }
   }
 
+  async function confirmDelivery(reservationId: string) {
+    try {
+      const response = await axios.patch(
+        `https://food-share-api.onrender.com/api/reservas/${reservationId}/confirm`, 
+        { status: "ENTREGUE" }
+      );
+      if (response.status === 200) {
+        Alert.alert("Entrega Confirmada", "A entrega foi confirmada com sucesso!");
+      } else {
+        Alert.alert("Erro", "Falha ao confirmar a entrega");
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Erro", "Ocorreu um erro ao confirmar a entrega.");
+    }
+  }
+
   function handleQRCodeRead(data: string) {
     setModalIsVisible(false);
-    Alert.alert("QR code", data);
+    Alert.alert("QR Code", `Código lido: ${data}`);
+
+    confirmDelivery(data);
   }
+
   return (
     <View style={styles.container}>
       <View>
