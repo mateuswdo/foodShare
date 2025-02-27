@@ -50,7 +50,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   async function login(email: string, password: string) {
     try {
-      console.log("Chegou no login", email, password);
       const { data } = await api.post("sessao", {
         email,
         password,
@@ -88,7 +87,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   async function logout() {
     try {
-      console.log("Chegou no logout");
       setLoadingUserStorageData(true);
       setUser({} as UserDTO);
       await storageUserRemove();
