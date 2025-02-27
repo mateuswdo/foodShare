@@ -66,4 +66,17 @@ export default {
     Inter_800ExtraBold: "Inter_800ExtraBold",
     Inter_900Black: "Inter_900Black",
   },
-};
+  fontSizes: {
+    large: 26,  // Tamanho grande da fonte
+    medium: 18, // Tamanho médio da fonte
+  },
+  spacing: {
+    small: 8,    // Pequeno espaço
+    medium: 16,  // Espaço médio
+    large: 24,   // Espaço grande
+    xlarge: 50,  // Extra grande
+  },
+  borderRadius: {
+    default: 8,  // Raio de borda padrão
+  },
+}

@@ -1,49 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, FlatList, Alert } from 'react-native';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { View, Text, TextInput,FlatList, Alert } from 'react-native';
 import { Input } from '@/components/Input';
-import { styles } from './style';
+import { Button } from "@/components/Button";
+import { styles } from './style'; 
+import { foodsData } from '@/data/foods'; 
+import { CardFood } from '@/components/CardFood'; 
 
-interface Food {
-  id: string;
-  name: string;
-  quantity: number;
-}
-interface Vulnerable {
-  id: string;
-}
 
 const ReservaScreen = () => {
-  const [foods, setFoods] = useState<Food[]>([]);
-  const [selectedFood, setSelectedFood] = useState<Food | null>(null);
+  const [foods, setFoods] = useState(foodsData); 
+  const [selectedFood, setSelectedFood] = useState(null);
   const [quantity, setQuantity] = useState('1');
-  const [pickupDate, setPickupDate] = useState<string>('');  // Agora é uma string para o formato da data
-  const [dateError, setDateError] = useState<string>('');  // Para mostrar um erro se a data estiver inválida
- 
-  
-  useEffect(() => {
-    axios.get('https://food-share-api.onrender.com/api/foods')
-      .then(response => setFoods(response.data))
-      .catch(error => console.error('Erro ao buscar alimentos:', error));
-  }, []);
+  const [pickupDate, setPickupDate] = useState<string>(''); 
+  const [dateError, setDateError] = useState<string>('');
 
   function handleSearch(text: string) {
-    
+   
   }
 
   const handleReserve = async () => {
-    // Validação da data
+    
     if (!selectedFood) {
       Alert.alert('Erro', 'Selecione um alimento.');
       return;
     }
-    
+
     if (!pickupDate) {
       setDateError('Por favor, informe a data de retirada.');
       return;
     }
 
-    // Validar formato da data (simples validação)
+  
     const isValidDate = Date.parse(pickupDate);
     if (isNaN(isValidDate)) {
       setDateError('Formato de data inválido. Use o formato YYYY-MM-DD.');
@@ -51,12 +38,7 @@ const ReservaScreen = () => {
     }
 
     try {
-      const response = await axios.post('https://food-share-api.onrender.com/api/reservas', {
-        vulnerable_id: '1', // Adicionar ID do usuário autenticado
-        food_id: selectedFood.id,
-        food_quantity: parseInt(quantity, 10),
-        pickup_date: pickupDate,  // Agora é a string de data no formato YYYY-MM-DD
-      });
+      
       Alert.alert('Sucesso', 'Reserva realizada com sucesso!');
     } catch (error) {
       Alert.alert('Erro', 'Não foi possível realizar a reserva.');
@@ -66,12 +48,38 @@ const ReservaScreen = () => {
 
   return (
     <View style={styles.container}>
-      
-       <View style={styles.inputsContainer}>
+      <Text style={styles.title}>Selecione um alimento:</Text>
+      <View style={styles.searchInput}>
+        <Input
+          icon="search"
+          formProps={{
+            name: 'search',
+            rules: undefined,
+            shouldUnregister: undefined,
+            defaultValue: undefined,
+            control: undefined,
+            disabled: undefined,
+          }}
+          inputProps={{
+            placeholder: 'Buscar',
+            onChangeText: handleSearch,
+            value: '',
+          }}
+        />
+      </View>
+      <FlatList
+            data={foods}
+            keyExtractor={(item) => item.id.toString()}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
+            columnWrapperStyle={styles.row}
+            renderItem={({ item }) => <CardFood item={item} />}
+          />
+          <View style={styles.form}>
               <Input
-                icon={"search"}
+                icon="calendar"
                 formProps={{
-                  name: "search",
+                  name: 'pickupDate',
                   rules: undefined,
                   shouldUnregister: undefined,
                   defaultValue: undefined,
@@ -79,45 +87,36 @@ const ReservaScreen = () => {
                   disabled: undefined,
                 }}
                 inputProps={{
-                  placeholder: "Buscar",
-                  onChangeText: handleSearch,
-                  value: '',
+                  placeholder: 'Data de Retirada (YYYY-MM-DD)',
+                  onChangeText: (text) => {
+                    setPickupDate(text);
+                    setDateError('');
+                  },
+                  value: pickupDate,
                 }}
               />
-            </View>
 
-      <Text style={styles.subTitle}>Selecione um alimento:</Text>
-      <FlatList
-        data={foods}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Text
-            style={{ padding: 10, backgroundColor: selectedFood?.id === item.id ? '#D6C2B3' : '#D6C2B3' }}
-            onPress={() => setSelectedFood(item)}>
-            {item.name} - {item.quantity} disponíveis
-          </Text>
-        )}
-      />
-      <TextInput
-        style={{ borderWidth: 1, padding: 8, marginVertical: 10 }}
-        keyboardType="numeric"
-        placeholder="Quantidade"
-        value={quantity}
-        onChangeText={setQuantity}
-      />
-      
-      <TextInput
-        style={{ borderWidth: 1, padding: 8, marginVertical: 10 }}
-        placeholder="Data de Retirada (YYYY-MM-DD)"
-        value={pickupDate}
-        onChangeText={(text) => {
-          setPickupDate(text);
-          setDateError(''); 
-        }}
-      />
-      {dateError ? <Text style={{ color: 'red' }}>{dateError}</Text> : null}
+              <Input
+                icon="shopping-cart"
+                formProps={{
+                  name: 'quantity',
+                  rules: undefined,
+                  shouldUnregister: undefined,
+                  defaultValue: undefined,
+                  control: undefined,
+                  disabled: undefined,
+                }}
+                inputProps={{
+                  placeholder: 'Quantidade',
+                  onChangeText: (text) => setQuantity(text),
+                  value: quantity,
+                }}
+              />
+              
+              {dateError ? <Text style={styles.errorText}>{dateError}</Text> : null}
 
-      <Button title="Confirmar Reserva" onPress={handleReserve} />
+              <Button title="Confirmar Reserva" onPress={handleReserve} />
+          </View>
     </View>
   );
 };
